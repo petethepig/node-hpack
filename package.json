@@ -1,0 +1,22 @@
+{
+  "name": "node-hpack",
+  "version": "0.0.1",
+  "description": "HPACK implementation",
+  "keywords": [
+    "hpack",
+    "http",
+    "http2",
+    "spdy",
+  ],
+  "author": "Dmitry Filimonov <me@dfilimonov.com>",
+  "main": "lib/hpack.js",
+  "dependencies": {
+    "buffertools": "~2.1.2"
+  },
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/petethepig/node-hpack.git"
+  },
+  "license": "MIT"
+}
