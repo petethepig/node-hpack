@@ -1,12 +1,12 @@
 {
   "name": "node-hpack",
   "version": "0.0.1",
-  "description": "HPACK implementation",
+  "description": "HPACK implementation for Node",
   "keywords": [
     "hpack",
     "http",
     "http2",
-    "spdy",
+    "spdy"
   ],
   "author": "Dmitry Filimonov <me@dfilimonov.com>",
   "main": "lib/hpack.js",
