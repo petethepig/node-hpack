@@ -1,73 +1,93 @@
+var assert = require('assert');
 var hpack = require('../lib/hpack');
 
 
-var compressor = new hpack.Context();
+var compressor = new hpack.Context({huffman: true});
 var decompressor = new hpack.Context();
 
 var headers, buffer;
 
+function stringify(headers){
+  return JSON.stringify(headers.sort(function(a, b){ return a.name > b.name; }), false, 2);
+}
 
-
-var i = 1;
 function runTest(headers){
   buffer = compressor.compress(headers);
-  console.log(i++);
+  var headers2 = decompressor.decompress(buffer);
+
+  // console.log(compressor.seqno);
   console.log('>>', buffer);
-  console.log('<<', JSON.stringify(decompressor.decompress(buffer)));
+  console.log('<<', stringify(headers2));
 
   // console.log(compressor.toString());
   // console.log(decompressor.toString());
+
+  assert.equal(stringify(headers), stringify(headers2));
 }
 
+
+
+
+
+
+
 runTest([
-  [':method', 'GET'],
-  [':scheme', 'http'],
-  [':path', '/'],
-  [':authority', 'www.example.com'],
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/'},
+  {name:':authority', value:'www.example.com'},
 ]);
 
 runTest([
-  [':method', 'GET'],
-  [':scheme', 'http'],
-  [':path', '/'],
-  [':authority', 'www.example.com'],
-  ['cache-control', 'no-cache'],
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/'},
+  {name:':authority', value:'www.example.com'},
+  {name:'cache-control', value:'no-cache'},
 ]);
 
 runTest([
-  [':method', 'GET'],
-  [':scheme', 'http'],
-  [':path', '/index.html'],
-  [':authority', 'www.example.com'],
-  ['cache-control', 'no-cache'],
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/index.html'},
+  {name:':authority', value:'www.example.com'},
+  {name:'cache-control', value:'no-cache'},
 ]);
 
 runTest([
-  [':method', 'GET'],
-  [':scheme', 'http'],
-  [':path', '/index.html'],
-  [':authority', 'www.example.com'],
-  ['cache-control', 'no-cache'],
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/index.html'},
+  {name:':authority', value:'www.example.com'},
+  {name:'cache-control', value:'no-cache'},
 ]);
 
 runTest([
-  [':method', 'POST'],
-  [':scheme', 'test'],
-  [':path', '/test.html'],
-  [':authority', 'www.example.com'],
-  ['set-cookie', ''],
+  {name:':method', value:'POST'},
+  {name:':scheme', value:'test'},
+  {name:':path', value:'/test.html'},
+  {name:':authority', value:'www.example.com'},
+  {name:'set-cookie', value:''},
 ]);
 
 runTest([
-  [':method', 'POST'],
-  [':scheme', 'test'],
-  [':path', '/test.html'],
-  [':authority', 'www.example.com'],
+  {name:':method', value:'POST'},
+  {name:':scheme', value:'test'},
+  {name:':path', value:'/test.html'},
+  {name:':authority', value:'www.example.com'},
+  {name:':authority', value:'www.example.com'},
 ]);
 
 runTest([
-  [':method', 'GET'],
-  [':scheme', 'http'],
-  [':path', '/test.html'],
-  [':authority', 'www.example.com'],
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/test.html'},
+  {name:':authority', value:'www.example.com'},
+]);
+
+runTest([
+  {name:':method', value:'GET'},
+  {name:':scheme', value:'http'},
+  {name:':path', value:'/test.html'},
+  {name:':authority', value:'www.example.com'},
 ]);
